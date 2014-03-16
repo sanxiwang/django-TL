@@ -282,7 +282,7 @@ class ReqRelations(models.Model):
 
 class ReqRevisions(models.Model):
     parent =models.ForeignKey('ReqVersions')
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, limit_choices_to={'node_type_id', 10})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', limit_choices_to={'node_type_id', 10})
     revision = models.IntegerField()
     req_doc_id = models.CharField(max_length=64, blank=True)
     name = models.CharField(max_length=100, blank=True)
@@ -302,7 +302,7 @@ class ReqRevisions(models.Model):
         db_table = 'req_revisions'
 
 class ReqSpecs(models.Model):
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, limit_choices_to={'node_type_id', 6})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', limit_choices_to={'node_type_id', 6})
     testproject = models.ForeignKey('Testprojects')
     doc_id = models.CharField(max_length=64)
     class Meta:
@@ -311,7 +311,7 @@ class ReqSpecs(models.Model):
 
 class ReqSpecsRevisions(models.Model):
     parent = models.ForeignKey('ReqSpecs')
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, limit_choices_to={'node_type_id', 11})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', limit_choices_to={'node_type_id', 11})
     revision = models.IntegerField()
     doc_id = models.CharField(max_length=64, blank=True)
     name = models.CharField(max_length=100, blank=True)
@@ -329,7 +329,7 @@ class ReqSpecsRevisions(models.Model):
         db_table = 'req_specs_revisions'
 
 class ReqVersions(models.Model):
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, limit_choices_to={'node_type_id', 8})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', limit_choices_to={'node_type_id', 8})
     version = models.IntegerField()
     revision = models.IntegerField()
     scope = models.TextField(blank=True)
@@ -338,9 +338,9 @@ class ReqVersions(models.Model):
     active = models.IntegerField()
     is_open = models.IntegerField()
     expected_coverage = models.IntegerField()
-    author_id = models.ForeignKey('Users',blank=True, null=True, related_name='+')
+    author = models.ForeignKey('Users',blank=True, null=True, related_name='+')
     creation_ts = models.DateTimeField()
-    modifier_id = models.ForeignKey('Users',blank=True, null=True, related_name='+')
+    modifier = models.ForeignKey('Users',blank=True, null=True, related_name='+')
     modification_ts = models.DateTimeField()
     log_message = models.TextField(blank=True)
     class Meta:
@@ -357,7 +357,7 @@ class Reqmgrsystems(models.Model):
         db_table = 'reqmgrsystems'
 
 class Requirements(models.Model):
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, related_name='+', limit_choices_to={'node_type_id', 7})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', related_name='+', limit_choices_to={'node_type_id', 7})
     srs = models.ForeignKey('NodesHierarchy', related_name='+', limit_choices_to={'node_type_id', 6})
     req_doc_id = models.CharField(max_length=64)
     class Meta:
@@ -382,8 +382,8 @@ class RiskAssignments(models.Model):
         db_table = 'risk_assignments'
 
 class RoleRights(models.Model):
-    role_id = models.ForeignKey('Roles')
-    right_id = models.ForeignKey('Rights')
+    role = models.ForeignKey('Roles')
+    right = models.ForeignKey('Rights')
     class Meta:
         managed = False
         db_table = 'role_rights'
@@ -457,7 +457,7 @@ class TestplanTcversions(models.Model):
         db_table = 'testplan_tcversions'
 
 class Testplans(models.Model):
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, limit_choices_to={'node_type_id', 5})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', limit_choices_to={'node_type_id', 5})
     testproject = models.ForeignKey('Testprojects')
     notes = models.TextField(blank=True)
     active = models.IntegerField()
@@ -483,7 +483,7 @@ class TestprojectReqmgrsystem(models.Model):
         db_table = 'testproject_reqmgrsystem'
 
 class Testprojects(models.Model):
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, limit_choices_to={'node_type_id', 1})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', limit_choices_to={'node_type_id', 1})
     notes = models.TextField(blank=True)
     color = models.CharField(max_length=12)
     active = models.IntegerField()
@@ -502,7 +502,7 @@ class Testprojects(models.Model):
         db_table = 'testprojects'
 
 class Testsuites(models.Model):
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, limit_choices_to={'node_type_id', 2})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', limit_choices_to={'node_type_id', 2})
     details = models.TextField(blank=True)
     class Meta:
         managed = False
@@ -565,7 +565,7 @@ class UserTestprojectRoles(models.Model):
         db_table = 'user_testproject_roles'
 
 class Users(models.Model):
-    id = models.ForeignKey('NodesHierarchy', primary_key=True, limit_choices_to={'node_type_id', 14})
+    id = models.ForeignKey('NodesHierarchy', primary_key=True, db_column='id', limit_choices_to={'node_type_id', 14})
     login = models.CharField(unique=True, max_length=30)
     password = models.CharField(max_length=32)
     role = models.ForeignKey('Roles')
